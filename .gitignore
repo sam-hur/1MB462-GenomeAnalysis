@@ -53,3 +53,12 @@ rsconnect/
 # Data Files
 # -----------------------------------
 raw_data/
+*/logs/
+*.gz
+*.fasta
+*.fas
+*.out
+*.fq
+*.fa
+*.zip
+
