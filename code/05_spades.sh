@@ -15,7 +15,7 @@ t=2
 #modules
 module load \
 	bioinfo-tools \
-	Spades \
+	spades \
 
 
 base_dir=/home/samhur/1MB462-GenomeAnalysis/data
@@ -25,13 +25,18 @@ out=$base_dir/metadata/QC/genomics_data
 # Assembly of Illumina + PacBio using Spades
 
 
-# Illumina
 mkdir -p $out/assemblies/spades
-out=$out/assemblies/spades
+out=$out/assemblies
 il_read1=$in/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz
 il_read2=$in/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz
 
-# uncompress/unzip + recompress/zip all PB files into a new .fastq.gz for spades
-pb_compressed=$(zcat "$in/PacBio/*" | gzip > $"$out/PacBio_reads_compressed.fastq.gz")
+set -x
 
-spades -1 $read1 -2 $read2 --pacbio $pb_compressed -o $out && rm "$out/PacBio_reads_compressed.fastq.gz"
+# uncompress/unzip + recompress/zip all PB files into a new .fastq.gz for spades
+
+zcat "$in/PacBio/*" | gzip > $"$out/PacBio_reads_compressed.fastq.gz"
+
+
+spades.py -1 $il_read1 -2 $il_read2 --pacbio "$out/PacBio_reads_compressed.fastq.gz" -o $out/spades && rm "$out/PacBio_reads_compressed.fastq.gz"
+
+set +x
