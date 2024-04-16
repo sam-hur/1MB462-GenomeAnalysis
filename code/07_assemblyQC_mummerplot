@@ -5,7 +5,7 @@
 #SBATCH -p core
 #SBATCH -n 2
 #SBATCH -t 03:30:00
-#SBATCH -J Assembly_QC_mummerplot
+#SBATCH -J Assembly_QC_MUMmer
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user sam.hurenkamp.9631@student.uu.se
 
@@ -15,22 +15,31 @@ t=2
 #modules
 module load \
 	bioinfo-tools \
-	spades \
+	MUMmer \
 
 
 base_dir=/home/samhur/1MB462-GenomeAnalysis/data
 in=$base_dir/raw_data/genomics_data
 out=$base_dir/metadata/QC/genomics_data
 
-# Assembly of Illumina + PacBio using Spades
+
+mkdir -p $out/assemblies_QC/MUMmer
+assembly=$out/assemblies/flye/pb/assembly.fasta
 
 
-mkdir -p $out/assemblies/spades
-out=$out/assemblies
-il_read1=$in/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz
-il_read2=$in/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz
 
 set -x
+# ------------------------
+out=$out/assemblies_QC/MUMmer
 
+# clean output dir
+#rm -r $out
 
+mummer -mum -b -c $assembly > $out/ref_qry.mums
+
+# show output
+tree $out
+
+# ------------------------
 set +x
+
