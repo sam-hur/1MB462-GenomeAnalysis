@@ -25,7 +25,9 @@ out=$base_dir/metadata/QC/genomics_data
 
 mkdir -p $out/assemblies_QC/MUMmer
 assembly=$out/assemblies/flye/pb/assembly.fasta
-
+ref=/home/samhur/1MB462-GenomeAnalysis/ref_genome
+ref1=$ref/GCF_009734005.1/ref_NCBI.fna
+ref2=$ref/GCA_009734005.2/ref_GenBank.fna # just optional alt.
 
 
 set -x
@@ -35,7 +37,8 @@ out=$out/assemblies_QC/MUMmer
 # clean output dir
 #rm -r $out
 
-mummer -mum -b -c $assembly > $out/ref_qry.mums
+mummer -mum -b -c $ref1 $assembly > $out/mummer.mums
+# mummerplot -postscript -p mummer $out/mummer.mums
 
 # show output
 tree $out

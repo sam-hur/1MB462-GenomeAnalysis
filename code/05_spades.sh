@@ -36,7 +36,6 @@ set -x
 
 zcat "$in/PacBio/*" | gzip > $"$out/PacBio_reads_compressed.fastq.gz"
 
-
 spades.py -1 $il_read1 -2 $il_read2 --pacbio "$out/PacBio_reads_compressed.fastq.gz" -o $out/spades && rm "$out/PacBio_reads_compressed.fastq.gz"
 
 set +x
