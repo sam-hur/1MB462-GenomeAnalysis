@@ -65,3 +65,7 @@ raw_data/
 *.svg
 *.png
 *.pdf
+
+
+/code/recycling/
+/data/metadata/
