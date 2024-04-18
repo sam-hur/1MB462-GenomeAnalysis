@@ -15,7 +15,7 @@ t=2
 #modules
 module load \
 	bioinfo-tools \
-	MUMmer \
+	MUMmer/4.0.0rc1 \
 
 
 base_dir=/home/samhur/1MB462-GenomeAnalysis/data
@@ -34,12 +34,11 @@ set -x
 # ------------------------
 out=$out/assemblies_QC/MUMmer
 
-# clean output dir
-#rm -r $out
-
-mummer -mum -b -c $ref1 $assembly > $out/mummer.mums
-# mummerplot -postscript -p mummer $out/mummer.mums
-
+# nucmer --maxmatch -c 100 -p $out/nucmer $ref1 $assembly 
+nucmer -p $out/nucmer $ref1 $assembly
+delta-filter -1 $out/nucmer.delta > $out/filtered_alignments.delta
+mummerplot --postscript -p mummerplot $out/filtered_alignments.delta 
+mv mummerplot.* $out
 # show output
 tree $out
 
