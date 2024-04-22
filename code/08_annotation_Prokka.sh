@@ -33,13 +33,22 @@ ref2=$ref/GCA_009734005.2/ref_GenBank.fna # just optional alt.
 
 set -x
 # ------------------------
-prefix1=prokka_flye
-prefix2=prokka_spades
+prefix1=prokka.flye
+prefix2=prokka.spades
 out=$out/annotations/Prokka
-prokka --force --outdir $out --prefix $prefix1 \
+mkdir $out/spades $out/flye
+
+# Flye assembly
+prokka --force --outdir $out/flye --prefix $prefix1 \
     --usegenus --genus Enterococcus --species faecium \
     --kingdom Bacteria --gram pos --strain E745 \
     $assembly
+
+# Spades assembly
+prokka --force --outdir $out/spades --prefix $prefix2 \
+    --usegenus --genus Enterococcus --species faecium \
+    --kingdom Bacteria --gram pos --strain E745 \
+    $assembly2
 
 # ------------------------
 set +x
