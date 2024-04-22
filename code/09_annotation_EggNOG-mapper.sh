@@ -3,8 +3,8 @@
 #SBATCH -A uppmax2024-2-7 
 #SBATCH -M snowy
 #SBATCH -p core
-#SBATCH -n 2
-#SBATCH -t 18:00:00
+#SBATCH -n 8
+#SBATCH -t 24:00:00
 #SBATCH -J Annotation_eggNOG-mapper
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user sam.hurenkamp.9631@student.uu.se
@@ -44,6 +44,11 @@ emapper.py \
     --itype genome \
     -o $prefix1
     --output_dir $out \
+
+
+# write still occurs locally, so we will move it here (if applicable)
+mv *.flye.* $out/flye
+
 
 # ------------------------
 set +x
