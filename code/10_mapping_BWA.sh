@@ -47,7 +47,6 @@ for f in "${RNA_cats[@]}"; do
 	files=$(ls $RNA_base/$f/trim_paired_*_pass_*.fastq.gz | sort)
 
 	for file in $files; do
-		# echo $file
 		err_id=$(basename "$file" | grep -oE 'ERR[0-9]+')
 		RNA_ids["$err_id"]+=" $file"  # space adds a seperator
 	done
@@ -55,7 +54,6 @@ done
 
 bwa index $assembly  # create db
 for key in "${!RNA_ids[@]}"; do  # for each key:value(filepaths) pair do:
-    # echo "Key: $key, Value: ${RNA_ids[$key]}"
 	values="${RNA_ids[$key]}"
 	prefix="$(basename $(dirname $values[0]))_$key.mapped"
 	echo $prefix
@@ -63,7 +61,7 @@ for key in "${!RNA_ids[@]}"; do  # for each key:value(filepaths) pair do:
 	bwa mem -t $t $assembly $values > $SNIC_TMP/$prefix.sam
 	samtools view -bS $SNIC_TMP/$prefix.sam -bo $SNIC_TMP/$prefix.bam
 	samtools sort $SNIC_TMP/$prefix.bam -o $out/$prefix.sorted.bam
-	samtools index $out/$prefix.sorted.bam -o $out/$prefix.indexed.bai
+	samtools index $out/$prefix.sorted.bam -o $out/$prefix.sorted.bam.bai
 done
 
 # ------------------------
