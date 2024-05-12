@@ -16,10 +16,7 @@ module load MultiQC
 
 
 base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data
-
-
+in=$base_dir/metadata/QC/genomics_data
 
 #aggregate QC reports
-multiqc $out -o $out/Aggr -p -v -f > $out/Aggr/output.txt
+multiqc $in -o $out/Aggr -p -v -f # > $out/Aggr/output.txt

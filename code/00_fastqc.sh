@@ -13,7 +13,6 @@
 #modules
 module load bioinfo-tools
 module load FastQC
-module load MultiQC
 
 
 base_dir=/home/samhur/1MB462-GenomeAnalysis/data
@@ -30,7 +29,8 @@ mkdir -p \
     $out/TN-Seq/Serum \
     $out/TN-Seq/HSerum
 
-fastqc -o $out/Illumina -t 2 $in/Illumina/*.gz 
+mkdir -p $out/Illumina/QC_PreTrim
+fastqc -o $out/Illumina/QC_PreTrim -t 2 $in/Illumina/*.gz 
 fastqc -o $out/Nanopore $in/Nanopore/*.gz
 fastqc -o $out/PacBio -t 2 $in/PacBio/*.gz
 
@@ -38,6 +38,7 @@ fastqc -o $out/PacBio -t 2 $in/PacBio/*.gz
 fastqc -o $out/RNA-Seq_BHI -t 2 $base_dir/raw_data/transcriptomics_data/RNA-Seq_BH/*.gz
 fastqc -o $out/RNA-Seq_Serum -t 2 $base_dir/raw_data/transcriptomics_data/RNA-Seq_Serum/*.gz
 
+# TN
 fastqc -o $out/TN-Seq/BHI -t 2 $base_dir/raw_data/transcriptomics_data/Tn-Seq_BHI/*.gz
 fastqc -o $out/TN-Seq/Serum -t 2 $base_dir/raw_data/transcriptomics_data/Tn-Seq_Serum/*.gz
 fastqc -o $out/TN-Seq/HSerum -t 2 $base_dir/raw_data/transcriptomics_data/Tn-Seq_HSerum/*.gz

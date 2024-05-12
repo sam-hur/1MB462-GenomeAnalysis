@@ -22,12 +22,18 @@ out=$base_dir/metadata/QC/genomics_data
 
 set -x
 # ------------------------
-mkdir -p $out/read_counts/ht_seq2
-prokka=$out/annotations/Prokka/flye/prokka_flye.gff
+output_dir=htseq2
+# ------------------------
+
+mkdir -p $out/read_counts/$output_dir
+mkdir -p $out/read_counts_eggNOG/$output_dir
+prokka=$out/annotations/Prokka/flye/prokka.flye.gff
+eggNOG=$out/annotations/eggNOG-mapper/flye/eggNOG.flye.emapper.genepred.gff
 
 for f in $out/mapping/bwa/*.sorted.bam; do
 	filename=$(echo $(basename $f) | cut -d'.' -f1)
-	htseq-count -r pos -s no -t CDS --idattr=ID $f <(sed '/^##FASTA/Q' $prokka) >  "$out/read_counts/ht_seq2/${filename}_readcount.out"
+	htseq-count -r pos -s no -t CDS --idattr=ID $f $eggNOG > "$out/read_counts_eggNOG/$output_dir/${filename}_readcount.out"
+	htseq-count -r pos -s no -t CDS --idattr=ID $f <(sed '/^##FASTA/Q' $prokka) > "$out/read_counts/$output_dir/${filename}_readcount.out"
 done
 # ------------------------
 set +x

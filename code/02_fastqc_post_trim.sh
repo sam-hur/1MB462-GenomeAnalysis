@@ -13,11 +13,11 @@
 #modules
 module load bioinfo-tools
 module load FastQC
-module load MultiQC
 
 
 base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data
+in=$base_dir/metadata/QC/genomics_data/trimmed_data
+out=$base_dir/metadata/QC/genomics_data/Illumina/QC_post
 
-fastqc -o $out/Illumina -t 2 $in/Illumina/*.gz 
+mkdir -p $out 
+fastqc -o $out -t 2 $in/*.fq

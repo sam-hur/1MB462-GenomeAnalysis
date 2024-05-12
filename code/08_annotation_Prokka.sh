@@ -36,7 +36,7 @@ set -x
 prefix1=prokka.flye
 prefix2=prokka.spades
 out=$out/annotations/Prokka
-mkdir $out/spades $out/flye
+mkdir -p $out/spades $out/flye
 
 # Flye assembly
 prokka --force --outdir $out/flye --prefix $prefix1 \

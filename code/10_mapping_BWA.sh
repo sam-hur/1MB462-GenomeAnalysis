@@ -22,7 +22,7 @@ base_dir=/home/samhur/1MB462-GenomeAnalysis/data
 in=$base_dir/raw_data/genomics_data
 out=$base_dir/metadata/QC/genomics_data
 
-target_dir=$out/mapping/bwa
+target_dir=$out/mapping/bwa2
 
 mkdir -p $target_dir
 assembly=$out/assemblies/flye/pb/assembly.fasta
@@ -52,8 +52,10 @@ for f in "${RNA_cats[@]}"; do
 	done
 done
 
+echo $RNA_ids
+
 bwa index $assembly  # create db
-for key in "${!RNA_ids[@]}"; do  # for each key:value(filepaths) pair do:
+for key in "${!RNA_ids[@]}"; do  # for each key:value<filepaths> pair do:
 	values="${RNA_ids[$key]}"
 	prefix="$(basename $(dirname $values[0]))_$key.mapped"
 	echo $prefix
