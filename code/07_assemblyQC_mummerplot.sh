@@ -12,16 +12,11 @@
 
 t=2
 
+source ../config.cfg
 #modules
 module load \
 	bioinfo-tools \
 	MUMmer/4.0.0rc1 \
-
-
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data
-
 
 mkdir -p $out/assemblies_QC/MUMmer
 assembly=$out/assemblies/flye/pb/assembly.fasta
@@ -31,8 +26,6 @@ ref=/home/samhur/1MB462-GenomeAnalysis/ref_genome
 ref1=$ref/GCF_009734005.1/ref_NCBI.fna
 ref2=$ref/GCA_009734005.2/ref_GenBank.fna # just optional alt.
 
-
-set -x
 # ------------------------
 out=$out/assemblies_QC/MUMmer
 
@@ -46,11 +39,4 @@ nucmer -p $out/nucmer.spades $ref1 $assembly2
 delta-filter -1 $out/nucmer.spades.delta > $out/filtered_alignments.spades.delta
 mummerplot --png -p mummerplot.spades $out/filtered_alignments.spades.delta 
 mv mummerplot.* $out
-
-
-# show output
-tree $out
-
-# ------------------------
-set +x
 

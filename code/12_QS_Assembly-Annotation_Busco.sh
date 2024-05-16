@@ -12,6 +12,9 @@
 
 t=8
 
+
+source ../config.cfg
+
 #modules
 module load \
 	bioinfo-tools \
@@ -20,13 +23,8 @@ module load \
 
 source $AUGUSTUS_CONFIG_COPY
 
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data
 assembly=$out/assemblies/flye/pb/assembly.fasta
 assembly2=$out/assemblies/spades/contigs.fasta
-
-set -x
 
 mkdir $out/busco
 # ------------------------
@@ -70,5 +68,3 @@ prefix=prokka.flye.busco
 # busco -i prokka.flye.busco -o $out/annotations_QC/flye.busco -l $BUSCO_LINEAGE_SETS/bacteria -m genome -c $t --out_dir $out/busco # faa
 run_busco $out/annotations/Prokka/flye/prokka.flye.faa $prefix proteins
 cp -r $out/busco/$prefix $out/annotations_QC
-
-set +x

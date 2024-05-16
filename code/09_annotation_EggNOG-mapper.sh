@@ -12,15 +12,13 @@
 
 t=2
 
+
+source ../config.cfg
+
 #modules
 module load \
 	bioinfo-tools \
 	eggNOG-mapper/2.1.9 \
-
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data
-
 
 mkdir -p $out/annotations/eggNOG-mapper
 assembly=$out/assemblies/flye/pb/assembly.fasta
@@ -29,8 +27,6 @@ ref=/home/samhur/1MB462-GenomeAnalysis/ref_genome
 ref1=$ref/GCF_009734005.1/ref_NCBI.fna
 ref2=$ref/GCA_009734005.2/ref_GenBank.fna # just optional alt.
 
-
-set -x
 # ------------------------
 prefix1=eggNOG.flye
 prefix2=eggNOG.spades
@@ -48,7 +44,6 @@ emapper.py \
 
 # write still occurs locally, so we will move it here (if applicable)
 mv *.flye.* $out/flye
-
 
 # ------------------------
 set +x

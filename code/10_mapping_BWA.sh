@@ -12,15 +12,14 @@
 
 t=8
 
+
+source ../config.cfg
+
 #modules
 module load \
 	bioinfo-tools \
 	bwa \
     samtools \
-
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data
 
 target_dir=$out/mapping/bwa2
 

@@ -9,15 +9,15 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user sam.hurenkamp.9631@student.uu.se
 
+source ../config.cfg
 
 #modules
-module load bioinfo-tools
-module load FastQC
+module load \
+    bioinfo-tools \
+    FastQC
 
-
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/metadata/QC/genomics_data/trimmed_data
-out=$base_dir/metadata/QC/genomics_data/Illumina/QC_post
-
+in=$out/trimmed_data
+out=$out/FastQC/Illumina/Post_Trim
 mkdir -p $out 
+
 fastqc -o $out -t 2 $in/*.fq

@@ -9,26 +9,20 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user sam.hurenkamp.9631@student.uu.se
 
-
 t=2  #thread_count
 
+
+source ../config.cfg
 #modules
 module load \
 	bioinfo-tools \
 	Flye \
 
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
 in=$base_dir/raw_data/genomics_data
-out=$base_dir/metadata/QC/genomics_data/assemblies/flye
+out=$out/assemblies/flye
 
 mkdir -p $out/pb
 mkdir $out/np
-
-
-set -euo pipefail
-
-# Assembly of pacbio + nanopore (maybe)?
-set -x
 
 flye --threads $t --pacbio-raw $in/PacBio/* --out-dir $out/pb # individual pb
 flye --threads $t --nano-raw $in/Nanopore/* --out-dir $out/np # individual np
@@ -36,6 +30,4 @@ flye --threads $t --nano-raw $in/Nanopore/* --out-dir $out/np # individual np
 #Combined hybrid assembly
 flye --threads $t --pacbio-raw $in/PacBio/* --nano-raw $in/Nanopore/* --out-dir $out  # PB+NP
 
-
-set +x
 

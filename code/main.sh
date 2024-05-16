@@ -15,3 +15,5 @@ for f in $jobs; do
     sbatch -W $f
 done;
 wait
+
+sbatch -W jobs[0]

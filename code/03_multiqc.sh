@@ -9,14 +9,16 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user sam.hurenkamp.9631@student.uu.se
 
+source ../config.cfg
 
 #modules
 module load bioinfo-tools
 module load MultiQC
 
+in=$out/FastQC/Illumina
+out=$base_dir/output/Aggr/Illumina
 
-base_dir=/home/samhur/1MB462-GenomeAnalysis/data
-in=$base_dir/metadata/QC/genomics_data
+mkdir -p $out
 
 #aggregate QC reports
-multiqc $in -o $out/Aggr -p -v -f # > $out/Aggr/output.txt
+multiqc $in -o $out -p -v -f # > $out/Aggr/output.txt
