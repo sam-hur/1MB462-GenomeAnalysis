@@ -48,7 +48,7 @@ head(counts(dds, normalized = FALSE), 20) # view first 20 counts
 
 
 # By default, R will choose a reference level for factors based on alphabetical order
-# Explicitly set reference level so BHI is compared against Serum (control):
+# Explicitly set reference level so BHI is compared against Serum ():
 dds$condition <- relevel(dds$condition, ref = "BHI") 
 
 # result summary from DESeq
@@ -114,3 +114,14 @@ pheatmap(
   cluster_cols=T,
   annotation_col = annotation
 )
+
+# to csv
+
+write.csv(matrix, "top_genes.csv")
+?write.csv
+
+# fetch & replace names with those from prokka
+prokka <- read.table("A:/GA2/full_sync/data_outputs/annotations/Prokka/flye/prokka.flye.gff")
+prokka
+
+
