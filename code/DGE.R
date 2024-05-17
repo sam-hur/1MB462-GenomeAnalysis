@@ -120,8 +120,4 @@ pheatmap(
 write.csv(matrix, "top_genes.csv")
 ?write.csv
 
-# fetch & replace names with those from prokka
-prokka <- read.table("A:/GA2/full_sync/data_outputs/annotations/Prokka/flye/prokka.flye.gff")
-prokka
-
 
