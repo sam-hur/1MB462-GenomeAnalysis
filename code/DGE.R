@@ -17,6 +17,7 @@ library(ggplot2)
 library(vsn)
 library(purrr)
 library(tibble)
+library(reshape2)
 # --
 directory <- "A:/GenomeAnalysis/read_counts/htseq2/"
 # --
@@ -44,8 +45,8 @@ colData(htSeq)["condition"] <- factor(c(rep("BHI", 3), rep("Serum", 3)))  # BHI 
 dds <- DESeq(htSeq)
 dds <- dds[rowSums(counts(dds, normalized=F)) >= 10, ]
 colData(dds)
-head(counts(dds, normalized = FALSE), 20) # view first 20 counts
 
+read_counts <- counts(dds, normalized = FALSE)
 
 # By default, R will choose a reference level for factors based on alphabetical order
 # Explicitly set reference level so BHI is compared against Serum ():
@@ -120,4 +121,73 @@ pheatmap(
 write.csv(matrix, "top_genes.csv")
 ?write.csv
 
+cnts <- as.data.frame(read_counts[rownames(read_counts) %in% top_genes, ])
+cnts
 
+df <- data.frame(Gene=rownames(cnts), Frequency=rowSums(cnts), row.names = NULL)
+df
+
+cnts_per_treatment <- as.data.frame(cnts[rownames(cnts) %in% top_genes, ])
+
+head(cnts_per_treatment, 10)
+df_treatment <- as.data.frame(cnts[])
+
+
+colnames(cnts_per_treatment) <- c("BHI1", "BHI2", "BHI3", "Serum1", "Serum2", "Serum3")
+bhi <- rowSums(cnts_per_treatment[, grepl("BHI", colnames(cnts_per_treatment))])
+serum <- rowSums(cnts_per_treatment[, grepl("Serum", colnames(cnts_per_treatment))])
+cnts_per_treatment
+cnts_per_treatment <- data.frame(
+  Gene = rownames(cnts_per_treatment),
+  BHI = bhi,
+  Serum = serum,
+  row.names = NULL
+)
+
+read_counts
+colnames(read_counts) <- c("BHI1", "BHI2", "BHI3", "Serum1", "Serum2", "Serum3")
+bhi <- rowSums(read_counts[, grepl("BHI", colnames(read_counts))])
+serum <- rowSums(read_counts[, grepl("Serum", colnames(read_counts))])
+cnts_all <- data.frame(
+  Gene= rownames(read_counts),
+  BHI = bhi,
+  Serum = serum,
+  row.names = NULL 
+)
+
+cnts_all
+
+cnts_per_treatment
+
+# Create the bar plot
+plt <- ggplot(cnts_per_treatment, aes(x = Gene)) +
+  geom_bar(aes(y = BHI, fill = "BHI"), stat = "identity", position = "stack") +
+  geom_bar(aes(y = Serum, fill = "Serum"), stat = "identity", position = "stack") +
+  labs(title = "Sum of Read Counts for Each Gene by Condition",
+       x = "Gene",
+       y = "Sum of Read Counts",
+       fill = "Condition") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5, size = 22, margin = margin(t=20, b=20)))
+
+ggsave("top_genes_hist.png", plt)
+plt
+
+plt_all <- ggplot(cnts_all, aes(x = Gene)) +
+  geom_bar(aes(y = BHI, fill = "BHI"), stat = "identity", position = "stack") +
+  geom_bar(aes(y = Serum, fill = "Serum"), stat = "identity", position = "stack") +
+  labs(title = "Sum of Read Counts for Each Gene by Condition",
+       x = "Gene",
+       y = "Sum of Read Counts",
+       fill = "Condition") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 22, margin = margin(t = 20, b = 20)),
+        axis.text.x = element_blank(),  # Hide x-axis text
+        axis.ticks.x = element_blank()) +  # Hide x-axis ticks
+  ylim(0, 6.5e+05)  # Set y-axis limit
+  
+plt_all
+
+ggsave("top_genes_hist.png", plt)
+ggsave("all_genes_hist.png", plt_all)
